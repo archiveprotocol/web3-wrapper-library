@@ -28,7 +28,7 @@
     "ethers": "^5.7.2",
     "ioredis": "^5.3.1",
     "log4js": "^6.7.1",
-    "logging-library": "https://github.com/archiveprotocol/logging-library.git#AP-2860",
+    "logging-library": "https://github.com/archiveprotocol/logging-library.git#7b9edf1e64bcc8b29f1c9e5d9b13fd9d35b3d51e",
     "logging-queue-interfaces": "https://github.com/archiveprotocol/logging-queue-interfaces.git#v1.0.17",
     "only-allow": "1.2.1"
   },
