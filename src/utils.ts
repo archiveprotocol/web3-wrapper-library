@@ -4,6 +4,7 @@ import * as web3_solana from '@solana/web3.js';
 import { CHAINID } from 'apy-vision-config';
 import { RPCOracle } from './rpcOracle';
 import { asL2Provider } from '@eth-optimism/sdk';
+import { performance } from 'perf_hooks';
 
 export async function executeCallOrSend(
   rpcUrls: string[],
@@ -22,11 +23,14 @@ export async function executeCallOrSend(
     const selectedRpcUrl = rpcOracle.getNextAvailableRpc();
 
     try {
+      const start = performance.now();
       const result = await rpcProviderFn(
         isOptimismOrBaseNetwork(String(networkId))
           ? asL2Provider(new ethers.providers.JsonRpcProvider(selectedRpcUrl))
           : new ethers.providers.StaticJsonRpcProvider(selectedRpcUrl),
       );
+      const end = performance.now();
+      console.log('processed time: ', end - start);
       return result;
     } catch (error) {
       const errorMessage = getErrorMessage(error, selectedRpcUrl);
