@@ -5145,12 +5145,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"logging-library@https://github.com/archiveprotocol/logging-library.git#v1.0.27":
+"logging-library@https://github.com/archiveprotocol/logging-library.git#AP-2860":
   version: 1.0.27
-  resolution: "logging-library@https://github.com/archiveprotocol/logging-library.git#commit=70228d6d9872c7195a6ea43e0e460fdc48b55812"
+  resolution: "logging-library@https://github.com/archiveprotocol/logging-library.git#commit=ab4b5f13f7d515b70698be6d04c012e5fd9d0fe5"
   dependencies:
     kafkajs: 2.2.4
-  checksum: 63a88af9ef8261faad0d5bfb4c60aa9eaa0d7d11ff6c9edd1e403b04c256f1d961248c7dfb56cc8b36a63f6c0946513528f2342a0eab836e4f1049fb796551a2
+  checksum: 93d733301f3f13439e029a02c1c06e7fc29c1da856d5389408ae7233211c2e1574eea7cc5835c98902d2b976d93cb6ff624a17ead8a942d0d21e2d172306a7e9
   languageName: node
   linkType: hard
 
@@ -7014,7 +7014,7 @@ __metadata:
     jest-offline: ^1.0.1
     lint-staged: ">=10"
     log4js: ^6.7.1
-    logging-library: "https://github.com/archiveprotocol/logging-library.git#v1.0.27"
+    logging-library: "https://github.com/archiveprotocol/logging-library.git#AP-2860"
     logging-queue-interfaces: "https://github.com/archiveprotocol/logging-queue-interfaces.git#v1.0.17"
     only-allow: 1.2.1
     prettier: ^2.8.8
