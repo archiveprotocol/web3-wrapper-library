@@ -4,6 +4,8 @@ import * as web3_solana from '@solana/web3.js';
 import { CHAINID } from 'apy-vision-config';
 import { RPCOracle } from './rpcOracle';
 import { asL2Provider } from '@eth-optimism/sdk';
+import { performance } from 'perf_hooks';
+import { KafkaManager } from 'logging-library';
 
 export async function executeCallOrSend(
   rpcUrls: string[],
@@ -22,11 +24,16 @@ export async function executeCallOrSend(
     const selectedRpcUrl = rpcOracle.getNextAvailableRpc();
 
     try {
+      const start = performance.now();
       const result = await rpcProviderFn(
         isOptimismOrBaseNetwork(String(networkId))
           ? asL2Provider(new ethers.providers.JsonRpcProvider(selectedRpcUrl))
           : new ethers.providers.StaticJsonRpcProvider(selectedRpcUrl),
       );
+      const end = performance.now();
+      const kafkaManager = KafkaManager.getInstance();
+      if (kafkaManager) kafkaManager.sendRpcResponseTimeToKafka(selectedRpcUrl, end - start, requestId);
+
       return result;
     } catch (error) {
       const errorMessage = getErrorMessage(error, selectedRpcUrl);
@@ -63,7 +70,11 @@ export async function executeCallOrSendSolana(
   for (let i = startIndex; i < endIndex; i++) {
     const rpc = rpcs[i];
     try {
+      const start = performance.now();
       const result = await fn(new web3_solana.Connection(rpc));
+      const end = performance.now();
+      const kafkaManager = KafkaManager.getInstance();
+      if (kafkaManager) kafkaManager.sendRpcResponseTimeToKafka(rpc, end - start, requestId);
       return result;
     } catch (error) {
       if (error.code === 'NETWORK_ERROR') {
