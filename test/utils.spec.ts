@@ -1,10 +1,7 @@
 import { executeCallOrSend } from '../src/utils';
-import { ethers } from 'ethers';
 import { CHAINID } from 'apy-vision-config';
 
 describe('utils functions', () => {
-  const provider = ethers.providers.JsonRpcProvider;
-
   const testRequestId = '03a0bfdc-9bcf-4436-a200-c85e11b3926c';
   const rpcs = ['http://rpc1.example.com', 'http://rpc2.example.com'];
 

@@ -27,7 +27,7 @@ export async function executeCallOrSend(
       const start = performance.now();
       const result = await rpcProviderFn(
         isOptimismOrBaseNetwork(String(networkId))
-          ? asL2Provider(new ethers.providers.JsonRpcProvider(selectedRpcUrl))
+          ? asL2Provider(new ethers.providers.StaticJsonRpcProvider(selectedRpcUrl))
           : new ethers.providers.StaticJsonRpcProvider(selectedRpcUrl),
       );
       const end = performance.now();
