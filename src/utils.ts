@@ -4,6 +4,8 @@ import * as web3_solana from '@solana/web3.js';
 import { CHAINID } from 'apy-vision-config';
 import { RPCOracle } from './rpcOracle';
 import { asL2Provider } from '@eth-optimism/sdk';
+import {performance} from "perf_hooks";
+import {KafkaManager} from "logging-library";
 
 export async function executeCallOrSend(
   rpcUrls: string[],
@@ -64,7 +66,11 @@ export async function executeCallOrSendSolana(
     const selectedRpcUrl = rpcOracle.getNextAvailableRpc();
 
     try {
+      const start = performance.now();
       const result = await fn(new web3_solana.Connection(selectedRpcUrl));
+      const end = performance.now();
+      const kafkaManager = KafkaManager.getInstance();
+      if (kafkaManager) kafkaManager.sendRpcResponseTimeToKafka(selectedRpcUrl, end - start, requestId);
       return result;
     } catch (error) {
       const errorMessage = getErrorMessage(error, selectedRpcUrl);

@@ -39,6 +39,8 @@ const web3_solana = __importStar(require("@solana/web3.js"));
 const apy_vision_config_1 = require("apy-vision-config");
 const rpcOracle_1 = require("./rpcOracle");
 const sdk_1 = require("@eth-optimism/sdk");
+const perf_hooks_1 = require("perf_hooks");
+const logging_library_1 = require("logging-library");
 function executeCallOrSend(rpcUrls, networkId, rpcProviderFn, requestId, attemptFallback = true) {
     return __awaiter(this, void 0, void 0, function* () {
         const rpcOracle = new rpcOracle_1.RPCOracle(networkId, rpcUrls);
@@ -83,7 +85,12 @@ function executeCallOrSendSolana(rpcUrls, networkId, fn, requestId, attemptFallb
         for (let attempt = 0; attempt < maxAttempts; attempt++) {
             const selectedRpcUrl = rpcOracle.getNextAvailableRpc();
             try {
+                const start = perf_hooks_1.performance.now();
                 const result = yield fn(new web3_solana.Connection(selectedRpcUrl));
+                const end = perf_hooks_1.performance.now();
+                const kafkaManager = logging_library_1.KafkaManager.getInstance();
+                if (kafkaManager)
+                    kafkaManager.sendRpcResponseTimeToKafka(selectedRpcUrl, end - start, requestId);
                 return result;
             }
             catch (error) {
