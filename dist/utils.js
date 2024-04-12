@@ -80,32 +80,27 @@ function getErrorMessage(error, rpcUrl) {
         return `Error on RPC ${rpcUrl}, code: ${error.code}, message: ${error.message}`;
     }
 }
-function executeCallOrSendSolana(rpcs, networkId, fn, requestId, attemptFallback = true) {
+function executeCallOrSendSolana(rpcUrls, networkId, fn, requestId, attemptFallback = true) {
     return __awaiter(this, void 0, void 0, function* () {
+        const rpcOracle = new rpcOracle_1.RPCOracle(networkId, rpcUrls);
+        const maxAttempts = attemptFallback ? rpcOracle.getRpcCount() : 1;
         const logger = logger_1.ArchiveLogger.getLogger();
         if (requestId)
             logger.addContext(logger_1.REQUEST_ID, requestId);
-        const startIndex = attemptFallback ? 0 : rpcs.length - 1;
-        const endIndex = attemptFallback ? rpcs.length : startIndex + 1;
-        for (let i = startIndex; i < endIndex; i++) {
-            const rpc = rpcs[i];
+        for (let attempt = 0; attempt < maxAttempts; attempt++) {
+            const selectedRpcUrl = rpcOracle.getNextAvailableRpc();
             try {
                 const start = perf_hooks_1.performance.now();
-                const result = yield fn(new web3_solana.Connection(rpc));
+                const result = yield fn(new web3_solana.Connection(selectedRpcUrl));
                 const end = perf_hooks_1.performance.now();
                 const kafkaManager = logging_library_1.KafkaManager.getInstance();
                 if (kafkaManager)
-                    kafkaManager.sendRpcResponseTimeToKafka(rpc, end - start, requestId);
+                    kafkaManager.sendRpcResponseTimeToKafka(selectedRpcUrl, end - start, requestId);
                 return result;
             }
             catch (error) {
-                if (error.code === 'NETWORK_ERROR') {
-                    logger.error(`error connecting to rpc ${rpc}, message: ${error.message}`);
-                }
-                else {
-                    logger.error(`error on rpc ${rpc}, code: ${error.code}, message: ${error.message}`);
-                    throw new Error(error.message);
-                }
+                const errorMessage = getErrorMessage(error, selectedRpcUrl);
+                logger.error(errorMessage);
             }
         }
         const msg = `all rpcs failed for networkId: ${networkId}, function called: ${fn.toString()}`;
