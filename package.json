@@ -1,6 +1,6 @@
 {
   "name": "web3-wrapper-library",
-  "version": "3.2.8",
+  "version": "3.2.9",
   "main": "dist/index.js",
   "description": "A wrapper for ethers.js calls that monitors said calls through kafka",
   "scripts": {
@@ -28,7 +28,7 @@
     "ethers": "^5.7.2",
     "ioredis": "^5.3.1",
     "log4js": "^6.7.1",
-    "logging-library": "https://github.com/archiveprotocol/logging-library.git#v1.0.29",
+    "logging-library": "https://github.com/archiveprotocol/logging-library.git#v1.0.30",
     "logging-queue-interfaces": "https://github.com/archiveprotocol/logging-queue-interfaces.git#v1.0.17",
     "only-allow": "1.2.1"
   },
