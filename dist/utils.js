@@ -53,8 +53,8 @@ function executeCallOrSend(rpcUrls, networkId, rpcProviderFn, requestId, attempt
             try {
                 const start = perf_hooks_1.performance.now();
                 const result = yield rpcProviderFn(isOptimismOrBaseNetwork(String(networkId))
-                    ? (0, sdk_1.asL2Provider)(new ethers_1.ethers.providers.StaticJsonRpcProvider(selectedRpcUrl))
-                    : new ethers_1.ethers.providers.StaticJsonRpcProvider(selectedRpcUrl));
+                    ? (0, sdk_1.asL2Provider)(new ethers_1.ethers.providers.StaticJsonRpcProvider(selectedRpcUrl, Number(networkId)))
+                    : new ethers_1.ethers.providers.StaticJsonRpcProvider(selectedRpcUrl, Number(networkId)));
                 const end = perf_hooks_1.performance.now();
                 const kafkaManager = logging_library_1.KafkaManager.getInstance();
                 if (kafkaManager)
