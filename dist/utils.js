@@ -33,55 +33,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.executeCallOrSendSolana = exports.executeCallOrSend = void 0;
-const ethers_1 = require("ethers");
 const logger_1 = require("./logger");
 const web3_solana = __importStar(require("@solana/web3.js"));
-const apy_vision_config_1 = require("apy-vision-config");
-const rpcOracle_1 = require("./rpcOracle");
-const sdk_1 = require("@eth-optimism/sdk");
+const rpcOracle_1 = require("./rpc/rpcOracle");
 const perf_hooks_1 = require("perf_hooks");
 const logging_library_1 = require("logging-library");
-function executeCallOrSend(rpcUrls, networkId, rpcProviderFn, requestId, attemptFallback = true) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const rpcOracle = new rpcOracle_1.RPCOracle(networkId, rpcUrls);
-        const maxAttempts = attemptFallback ? rpcOracle.getRpcCount() : 1;
-        const logger = logger_1.ArchiveLogger.getLogger();
-        if (requestId)
-            logger.addContext(logger_1.REQUEST_ID, requestId);
-        for (let attempt = 0; attempt < maxAttempts; attempt++) {
-            const selectedRpcUrl = rpcOracle.getNextAvailableRpc();
-            try {
-                const start = perf_hooks_1.performance.now();
-                const result = yield rpcProviderFn(isOptimismOrBaseNetwork(String(networkId))
-                    ? (0, sdk_1.asL2Provider)(new ethers_1.ethers.providers.StaticJsonRpcProvider(selectedRpcUrl, Number(networkId)))
-                    : new ethers_1.ethers.providers.StaticJsonRpcProvider(selectedRpcUrl, Number(networkId)));
-                const end = perf_hooks_1.performance.now();
-                const kafkaManager = logging_library_1.KafkaManager.getInstance();
-                if (kafkaManager)
-                    kafkaManager.sendRpcResponseTimeToKafka(selectedRpcUrl, end - start, requestId);
-                return result;
-            }
-            catch (error) {
-                const errorMessage = getErrorMessage(error, selectedRpcUrl);
-                logger.error(errorMessage);
-            }
-        }
-        const errorMessage = `All RPCs failed for networkId: ${networkId}, function called: ${rpcProviderFn.toString()}`;
-        logger.error(errorMessage);
-        return null;
+const evmRPCSender_1 = require("@src/rpc/evmRPCSender");
+function executeCallOrSend(rpcUrls_1, networkId_1, rpcProviderFn_1, requestId_1) {
+    return __awaiter(this, arguments, void 0, function* (rpcUrls, networkId, rpcProviderFn, requestId, attemptFallback = true) {
+        const sender = new evmRPCSender_1.EvmRPCSender(rpcUrls, networkId, rpcProviderFn, requestId, attemptFallback);
+        return sender.executeWithFallbacks();
     });
 }
 exports.executeCallOrSend = executeCallOrSend;
-function getErrorMessage(error, rpcUrl) {
-    if (error.code === 'NETWORK_ERROR') {
-        return `Error connecting to RPC ${rpcUrl}, message: ${error.message}`;
-    }
-    else {
-        return `Error on RPC ${rpcUrl}, code: ${error.code}, message: ${error.message}`;
-    }
-}
-function executeCallOrSendSolana(rpcUrls, networkId, fn, requestId, attemptFallback = true) {
-    return __awaiter(this, void 0, void 0, function* () {
+function executeCallOrSendSolana(rpcUrls_1, networkId_1, fn_1, requestId_1) {
+    return __awaiter(this, arguments, void 0, function* (rpcUrls, networkId, fn, requestId, attemptFallback = true) {
         const rpcOracle = new rpcOracle_1.RPCOracle(networkId, rpcUrls);
         const maxAttempts = attemptFallback ? rpcOracle.getRpcCount() : 1;
         const logger = logger_1.ArchiveLogger.getLogger();
@@ -109,7 +75,12 @@ function executeCallOrSendSolana(rpcUrls, networkId, fn, requestId, attemptFallb
     });
 }
 exports.executeCallOrSendSolana = executeCallOrSendSolana;
-function isOptimismOrBaseNetwork(networkId) {
-    return networkId === apy_vision_config_1.CHAINID.OPTIMISM || networkId === apy_vision_config_1.CHAINID.BASE;
+function getErrorMessage(error, rpcUrl) {
+    if (error.code === 'NETWORK_ERROR') {
+        return `Error connecting to RPC ${rpcUrl}, message: ${error.message}`;
+    }
+    else {
+        return `Error on RPC ${rpcUrl}, code: ${error.code}, message: ${error.message}`;
+    }
 }
 //# sourceMappingURL=utils.js.map
