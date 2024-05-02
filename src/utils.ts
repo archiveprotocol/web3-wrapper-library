@@ -4,8 +4,8 @@ import * as web3_solana from '@solana/web3.js';
 import { CHAINID } from 'apy-vision-config';
 import { RPCOracle } from './rpcOracle';
 import { asL2Provider } from '@eth-optimism/sdk';
-import { performance } from "perf_hooks";
-import { KafkaManager } from "logging-library";
+import { performance } from 'perf_hooks';
+import { KafkaManager } from 'logging-library';
 
 export async function executeCallOrSend(
   rpcUrls: string[],
@@ -27,8 +27,8 @@ export async function executeCallOrSend(
       const start = performance.now();
       const result = await rpcProviderFn(
         isOptimismOrBaseNetwork(String(networkId))
-          ? asL2Provider(new ethers.providers.StaticJsonRpcProvider(selectedRpcUrl))
-          : new ethers.providers.StaticJsonRpcProvider(selectedRpcUrl),
+          ? asL2Provider(new ethers.providers.StaticJsonRpcProvider(selectedRpcUrl, Number(networkId)))
+          : new ethers.providers.StaticJsonRpcProvider(selectedRpcUrl, Number(networkId)),
       );
       const end = performance.now();
       const kafkaManager = KafkaManager.getInstance();
