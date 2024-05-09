@@ -1,4 +1,4 @@
-import { RPCOracle } from '../src/rpcOracle'; // Import the RPCOracle class
+import { RPCOracle } from '../../src/rpc/rpcOracle'; // Import the RPCOracle class
 
 describe('RPCOracle', () => {
   let rpcOracle;
