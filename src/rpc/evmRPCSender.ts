@@ -1,12 +1,12 @@
 import {CHAINID} from 'apy-vision-config';
-import {RPCOracle} from "@src/rpc/rpcOracle";
-import {ArchiveLogger, REQUEST_ID} from "@src/logger";
+import {RPCOracle} from "./rpcOracle";
+import {ArchiveLogger, REQUEST_ID} from "../logger";
 import {performance} from "perf_hooks";
 import {asL2Provider} from "@eth-optimism/sdk";
 import {ethers} from "ethers";
 import {KafkaManager} from "logging-library";
 import {Logger} from 'log4js';
-import {AbstractRPCSender} from "@src/rpc/abstractRPCSender";
+import {AbstractRPCSender} from "./abstractRPCSender";
 
 
 export class EvmRPCSender extends AbstractRPCSender {

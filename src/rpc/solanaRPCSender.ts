@@ -1,9 +1,9 @@
-import {RPCOracle} from "@src/rpc/rpcOracle";
-import {ArchiveLogger, REQUEST_ID} from "@src/logger";
+import {RPCOracle} from "./rpcOracle";
+import {ArchiveLogger, REQUEST_ID} from "../logger";
 import {performance} from "perf_hooks";
 import {KafkaManager} from "logging-library";
 import {Logger} from 'log4js';
-import {AbstractRPCSender} from "@src/rpc/abstractRPCSender";
+import {AbstractRPCSender} from "./abstractRPCSender";
 import web3_solana from '@solana/web3.js';
 
 

@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 import * as web3_solana from '@solana/web3.js';
-import { EvmRPCSender } from "@src/rpc/evmRPCSender";
-import { SolanaRPCSender } from '@src/rpc/solanaRPCSender';
+import { EvmRPCSender } from "./rpc/evmRPCSender";
+import { SolanaRPCSender } from './rpc/solanaRPCSender';
 
 export async function executeCallOrSend(
   rpcUrls: string[],
