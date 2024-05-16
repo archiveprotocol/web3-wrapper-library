@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { AbstractRPCSender } from "@src/rpc/abstractRPCSender";
+import { AbstractRPCSender } from "./abstractRPCSender";
 export declare class EvmRPCSender extends AbstractRPCSender {
     private networkId;
     private rpcProviderFn;

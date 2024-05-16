@@ -11,13 +11,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EvmRPCSender = void 0;
 const apy_vision_config_1 = require("apy-vision-config");
-const rpcOracle_1 = require("@src/rpc/rpcOracle");
-const logger_1 = require("@src/logger");
+const rpcOracle_1 = require("./rpcOracle");
+const logger_1 = require("../logger");
 const perf_hooks_1 = require("perf_hooks");
 const sdk_1 = require("@eth-optimism/sdk");
 const ethers_1 = require("ethers");
 const logging_library_1 = require("logging-library");
-const abstractRPCSender_1 = require("@src/rpc/abstractRPCSender");
+const abstractRPCSender_1 = require("./abstractRPCSender");
 class EvmRPCSender extends abstractRPCSender_1.AbstractRPCSender {
     constructor(rpcUrls, networkId, rpcProviderFn, requestId, attemptFallback = true) {
         super();

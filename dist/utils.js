@@ -10,8 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.executeCallOrSendSolana = exports.executeCallOrSend = void 0;
-const evmRPCSender_1 = require("@src/rpc/evmRPCSender");
-const solanaRPCSender_1 = require("@src/rpc/solanaRPCSender");
+const evmRPCSender_1 = require("./rpc/evmRPCSender");
+const solanaRPCSender_1 = require("./rpc/solanaRPCSender");
 function executeCallOrSend(rpcUrls_1, networkId_1, rpcProviderFn_1, requestId_1) {
     return __awaiter(this, arguments, void 0, function* (rpcUrls, networkId, rpcProviderFn, requestId, attemptFallback = true) {
         const sender = new evmRPCSender_1.EvmRPCSender(rpcUrls, networkId, rpcProviderFn, requestId, attemptFallback);

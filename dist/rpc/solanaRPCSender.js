@@ -13,11 +13,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SolanaRPCSender = void 0;
-const rpcOracle_1 = require("@src/rpc/rpcOracle");
-const logger_1 = require("@src/logger");
+const rpcOracle_1 = require("./rpcOracle");
+const logger_1 = require("../logger");
 const perf_hooks_1 = require("perf_hooks");
 const logging_library_1 = require("logging-library");
-const abstractRPCSender_1 = require("@src/rpc/abstractRPCSender");
+const abstractRPCSender_1 = require("./abstractRPCSender");
 const web3_js_1 = __importDefault(require("@solana/web3.js"));
 class SolanaRPCSender extends abstractRPCSender_1.AbstractRPCSender {
     constructor(rpcUrls, networkId, rpcProviderFn, requestId, attemptFallback = true) {

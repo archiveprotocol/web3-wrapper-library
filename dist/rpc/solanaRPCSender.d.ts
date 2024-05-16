@@ -1,4 +1,4 @@
-import { AbstractRPCSender } from "@src/rpc/abstractRPCSender";
+import { AbstractRPCSender } from "./abstractRPCSender";
 import web3_solana from '@solana/web3.js';
 export declare class SolanaRPCSender extends AbstractRPCSender {
     private networkId;
